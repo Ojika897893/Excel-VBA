@@ -1,0 +1,45 @@
+EXCEL VBA
+
+Sub coffee()
+'
+' coffee_Macro_entire
+'
+     Sheets("M").Select
+     ' Step 1 - Find the starting Row
+        FirstUsedRow = Cells(1, "B").End(xlDown).Row + 1
+          
+    ' Step 2 - Figure out the number of rows
+        LastUsedRow = Cells(FirstUsedRow, "B").End(xlDown).Row
+        
+     ' Step 3 - Figure out the number of columns
+      LastusedColumns = Cells(FirstUsedRow, "B").End(xlToRight).Column + 1
+        
+    ' Step 4 - Find the starting Row Sheet1
+    Sheets("Sheet1").Select
+    FirstUsedRowSheet1 = Cells(1, "C").End(xlDown).Row + 1
+      
+    Dim j As Integer
+    Dim i As Integer
+    
+    For j = 0 To 4 * LastusedColumns Step LastusedColumns
+        Sheets("M").Select
+        Cells(FirstUsedRow, "B").Select
+        ActiveCell.Offset(0, j).Select
+        Sheets("Sheet1").Select
+        Cells(FirstUsedRowSheet1, "C").Select
+        ActiveCell.Offset(0, j / LastusedColumns).Select
+        Sheets("M").Select
+            For i = FirstUsedRow To LastUsedRow
+                Sheets("M").Select
+                ActiveCell.Range("A1:L1").Select
+                Selection.Copy
+                ActiveCell.Offset(1, 0).Range("A1").Select
+                Sheets("Sheet1").Select
+                Selection.PasteSpecial Paste:=xlPasteAll, Operation:=xlNone, SkipBlanks:= _
+                False, Transpose:=True
+                ActiveCell.Offset(12, 0).Range("A1").Select
+              Next i
+    Next j
+    
+End Sub
+
